@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken');
+/* modificar const jwt = require('jsonwebtoken');
 const Player = require('../models/player');
 
 const authMiddleware = async (req, res, next) => {
@@ -19,4 +19,4 @@ const authMiddleware = async (req, res, next) => {
   }
 };
 
-module.exports = authMiddleware;
+module.exports = authMiddleware; */

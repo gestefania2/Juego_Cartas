@@ -1,5 +1,5 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
+import { DataTypes } from "sequelize";
+import sequelize from "../config/sequelize.js";
 
 const Player = sequelize.define('Player', {
   player_id: {
@@ -26,16 +26,7 @@ const Player = sequelize.define('Player', {
     validate: {
       notEmpty: true
     }
-  },
-  custom_categories: {
-    type: DataTypes.STRING(100),
-    allowNull: true
-  },
-  custom_cards: {
-    type: DataTypes.ENUM('custom_answer', 'custom_question'),
-    allowNull: true
   }
-
 }, {
   tableName: 'players',
   timestamps: false

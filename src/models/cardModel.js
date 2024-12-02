@@ -1,6 +1,7 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
-const Category = require('./categoryModel');
+import { DataTypes } from "sequelize";
+import sequelize from "../config/sequelize.js";
+import Category from "./categoryModel.js";
+
 
 const Card = sequelize.define('Card', {
   card_id: {
@@ -15,8 +16,16 @@ const Card = sequelize.define('Card', {
   type: {
     type: DataTypes.ENUM('answer', 'question'),
     allowNull: false
+  },
+  player_id: {
+    type: DataTypes.INTEGER.UNSIGNED,
+    allowNull: true
+  },
+  category_id: {
+    type: DataTypes.INTEGER.UNSIGNED,
+    allowNull: false
   }
-  
+
 }, {
   tableName: 'cards',
   timestamps: false

@@ -1,5 +1,5 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
+import{ DataTypes } from('sequelize');
+import sequelize from ('../config/sequelize.js');
 
 const Category = sequelize.define('Category', {
   category_id: {
@@ -14,9 +14,12 @@ const Category = sequelize.define('Category', {
   },
   category_description: {
     type: DataTypes.STRING(400),
-    allowNull: false
+    allowNull: false 
+  },
+  player_id: {
+    type: DataTypes.INTEGER.UNSIGNED,
+    allowNull: true
   }
-
 }, {
     tableName: 'category',
     timestamps: false
