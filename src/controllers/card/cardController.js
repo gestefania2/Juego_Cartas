@@ -1,4 +1,6 @@
-import Card from "../../models/cardModel.js";
+import cardModel from "../../models/cardModel.js";
+import categoryModel from "../../models/categoryModel.js";
+import { Sequelize } from "sequelize";
 
 async function getAllCards() {
     const cards = await cardModel.findAll({
@@ -42,42 +44,48 @@ async function getAnswerCardByCategory(categoryId) {
 async function getRandomQuestionCardByCategory(categoryId) {
     const cards = await cardModel.findAll({
         where: {
-            categoryId: categoryId,
+            category_id: categoryId,
             type: 'question'
         },
         include: [{
-            model: category,  // Asegúrate de tener el modelo Category definido
+            model: categoryModel,  // Asegúrate de tener el modelo Category definido
             required: true  // Asegura que las cartas devueltas siempre tienen una categoría asociada
         }],
         order: [
             [Sequelize.fn('RAND')]  // Orden aleatorio usando RAND()
         ],
-        limit: 1  // Limitar a solo 5 cartas
+        limit: 1  // Limitar a solo 1 carta
     });
 
-    return cards;
+    return cards[0];
 }
 
 
-async function getRandomAnswerCardsByCategory(categoryId) {
+async function getRandomAnswerCardsByCategory(categoryId, total_cards=5) {
     const cards = await cardModel.findAll({
         where: {
-            categoryId: categoryId,
+            category_id: categoryId,
             type: 'answer'
         },
         include: [{
-            model: category,  // Asegúrate de tener el modelo Category definido
+            model: categoryModel,  // Asegúrate de tener el modelo Category definido
             required: true  // Asegura que las cartas devueltas siempre tienen una categoría asociada
         }],
         order: [
             [Sequelize.fn('RAND')]  // Orden aleatorio usando RAND()
         ],
-        limit: 5  // Limitar a solo 5 cartas
+        limit: total_cards  // Limitar a solo 5 cartas
     });
 
     return cards;
 }
 
+async function getQuestionAndAnswersCardsByCategory(categoryId,total_players) {
+    const total_cards = parseInt(total_players) + 4;
+    const question = await getRandomQuestionCardByCategory(categoryId);
+    const answers = await getRandomAnswerCardsByCategory(categoryId, total_cards);
+    return { question, answers };
+}
 async function createCard(text, type, categoryId) {
     const newCard = await cardModel.create({
         text,
@@ -87,7 +95,7 @@ async function createCard(text, type, categoryId) {
     return newCard;
 }
 
-async function updateCard(categoryId, text, type, categoryId) {
+async function updateCard(categoryId, text, type) {
     const updateCard = await Card.findByPk(id);
     updateCard.text = text || updateCard.text;
     updateCard.type = type || updateCard.type;
@@ -112,6 +120,7 @@ export const functions = {
     getAnswerCardByCategory,
     getRandomAnswerCardsByCategory,
     getRandomQuestionCardByCategory,
+    getQuestionAndAnswersCardsByCategory,
     createCard,
     updateCard,
     removeCard

@@ -16,7 +16,7 @@ function verify(token) {
         return response;
     } catch (error) {
         console.error(error);
-        return { error: "can't verify token", status: 500 }
+        return { error: "Token inválido o expirado", status: 401}
     }
 }
 

@@ -1,12 +1,16 @@
 import { Router } from "express";
-//import userRouter from './userRouter.js';
-import authApiController from "../auth/authApiController.js";
+import playerRouter from "./playerRouter.js";
+import cardRouter from "./cardsRouter.js";
+import categoryRouter from "./categoryRouter.js";
+import authApiController from "../../controllers/auth/authApiController.js";
 
 const router = Router();
 
-router.use("/user",userRouter)
+router.use("/player", playerRouter);
+router.use("/card", cardRouter);
+router.use("/category", categoryRouter);
 
-router.post("/login", authApiController.login)
-router.post("/register",authApiController.register);
+router.post("/login", authApiController.login);
+router.post("/register", authApiController.register);
 
 export default router;

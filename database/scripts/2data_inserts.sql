@@ -1,12 +1,15 @@
 USE juego_cartas;
 
-
-INSERT INTO `juego_cartas`.`category` (`category_id`, `category_name`, `category_description`) VALUES
+INSERT INTO `juego_cartas`.`category` (`category_id`, `category_name`, `category_description`) VALUES 
 (1, 'Humor Crudo', 'Lleva el humor negro y el sarcasmo al límite.'),
-(2, 'Sin Filtro', 'Respuestas absurdas o provocadoras, ideales para el tono de "sinvergüenza.'),
+(2, 'Sin Filtro', 'Respuestas absurdas o provocadoras, ideales para el tono de "sinvergüenza."'),
 (3, 'Vergüenza Ajena', 'Situaciones embarazosas o ridículas.'),
 (4, 'Fiesta y Descontrol', 'Momentos de caos social y humor relacionado con la vida nocturna.'),
-(5, 'A Lo Gorrino', 'Situaciones subiditas de tono.');
+(5, 'A Lo Gorrino', 'Situaciones subiditas de tono.')
+AS new
+ON DUPLICATE KEY UPDATE 
+`category_name` = new.`category_name`,
+`category_description` = new.`category_description`;
 
 INSERT INTO `juego_cartas`.`cards` (`text`, `type`, `category_id`) VALUES
 ('*Mi plan para arruinar una boda incluiría ______.*', 'question', 1),
@@ -264,5 +267,12 @@ INSERT INTO `juego_cartas`.`cards` (`text`, `type`, `category_id`) VALUES
 ("Un invitado vestido como un aguacate gigante.", "answer", 4),
 ("Una competencia de ver quién puede abrir una botella con el ombligo.", "answer", 4);
 
-
-
+INSERT INTO `juego_cartas`.`players` (`player_name`, `email`, `password`) VALUES 
+('Juan Pérez', 'juan.perez@example.com', 'password123'),
+('María López', 'maria.lopez@example.com', 'passw0rd'),
+('Carlos Sánchez', 'carlos.sanchez@example.com', '1234abcd'),
+('Ana Gómez', 'ana.gomez@example.com', 'securepass'),
+('Pedro Ramírez', 'pedro.ramirez@example.com', 'qwerty123'),
+('Lucía Fernández', 'lucia.fernandez@example.com', 'luciaPass1'),
+('Miguel Torres', 'miguel.torres@example.com', 'mypass123'),
+('Sofía Jiménez', 'sofia.jimenez@example.com', 'sofiaj2023');

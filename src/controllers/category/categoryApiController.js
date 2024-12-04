@@ -1,3 +1,4 @@
+import { get } from "mongoose";
 import categoryController from "./categoryController.js";
 
 async function getAllCategories(req, res) {
@@ -11,9 +12,18 @@ async function getCategoryById(req, res) {
     res.json(category);
 }
 
+async function createCategory(req, res) {
+    const { categoryId, categoryName, categoryDescription, playerId } = req.body;
+    const newCategory = await categoryController.createCategory(categoryId, categoryName, categoryDescription, playerId);
+    res.json(newCategory);
+
+}
 
 
 export const functions = {
     getAllCategories,
-    getCategoryById     
+    getCategoryById,
+    createCategory   
 }
+
+export default functions;
