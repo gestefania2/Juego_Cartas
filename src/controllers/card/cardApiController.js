@@ -54,6 +54,10 @@ async function getQuestionCardByCategory(req, res) {
     }
 }
 
+// tengo que crear una funcion para mostrar las cartas por numero de jugadores
+// tengo que llamar a las funciones de preguntas y respuestas, y mostrar 5 cartas según el numero de jugadores, y que me vaya generando 
+// máximo de 8 jugadores por partida (crear un bucle for)
+
 
 async function createCard(req, res) {
     const { text, type, category_id } = req.body;
