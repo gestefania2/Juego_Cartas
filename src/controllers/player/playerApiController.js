@@ -24,9 +24,31 @@ async function getPlayerById(req, res) {
     }
 }
 
+async function getPlayerByEmail(req, res) 
+{
+    try {
+        const email = req.body.email;
+        
+        if (!email) {
+            return res.status(400).json({ error: 'El email es obligatorio' });
+        }
+
+        const player = await playerController.getPlayerByEmail(email);
+        
+        if (!player) {
+            return res.status(404).json({ error: 'Jugador no encontrado' });
+        }
+        res.json(player);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error al obtener el jugador' });
+    }
+} 
+
 export const functions = { 
     getAllPlayers, 
-    getPlayerById 
+    getPlayerById,
+    getPlayerByEmail
 }
 
 export default functions;

@@ -1,6 +1,7 @@
-import cardController from "./cardController.js";
+import cardController from "../../controllers/card/cardController.js";
 async function getAllCards(req, res) {
-    const cards = await cardController.getAllCards();
+    const player_id = req.player_id;
+    const cards = await cardController.getAllCards(player_id);
     res.json(cards);
 }
 
@@ -54,11 +55,15 @@ async function getQuestionCardByCategory(req, res) {
     }
 }
 
+
+
 async function getQuestionAndAnswersCardsByCategory(req, res) {
     const categoryId = req.params.categoryId;
     const total_players = req.params.total_players;
+    const player_id = req.player_id;
+    console.log ("player id", player_id);
     try {
-        const { question, answers } = await cardController.getQuestionAndAnswersCardsByCategory(categoryId, total_players);
+        const { question, answers } = await cardController.getQuestionAndAnswersCardsByCategory(categoryId, total_players, player_id);
         return res.json({ question, answers });
     } catch (error) {
         console.error(error);
@@ -68,16 +73,18 @@ async function getQuestionAndAnswersCardsByCategory(req, res) {
 
 async function createCard(req, res) {
     const { text, type, category_id } = req.body;
-    const newCard = await cardController.createCard(text, type, category_id);
+    const player_id = req.player_id;
+    const newCard = await cardController.createCard(text, type, category_id, player_id);
     res.json({card:newCard});
 }
 
 
-async function updateCard(req, res) {
+
+async function updateCardById(req, res) {
     const {text, type, category_id} = req.body;
     const id = parseInt(req.params.id);
-    const updateCard = await cardController.updateCard(id, text, type, category_id);
-    res.json({card:updateCard});
+    const updateCardById = await cardController.updateCardById(id, text, type, category_id);
+    res.json({card:updateCardById});
 }
 
 async function removeCard(req, res) {
@@ -93,7 +100,7 @@ export const functions = {
     getQuestionCardByCategory,
     getQuestionAndAnswersCardsByCategory,
     createCard,
-    updateCard,
+    updateCardById,
     removeCard
 }
 

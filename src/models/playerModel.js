@@ -15,7 +15,7 @@ const Player = sequelize.define('Player', {
   email: {
     type: DataTypes.STRING(100),
     allowNull: false,
-    unique: true,
+    unique: true, 
     validate: {
       isEmail: true
     }

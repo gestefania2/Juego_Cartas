@@ -6,9 +6,9 @@ import authApiController from "../../controllers/auth/authApiController.js";
 
 const router = Router();
 
-router.use("/player", playerRouter);
 router.use("/card", cardRouter);
 router.use("/category", categoryRouter);
+router.use("/player", playerRouter);
 
 router.post("/login", authApiController.login);
 router.post("/register", authApiController.register);

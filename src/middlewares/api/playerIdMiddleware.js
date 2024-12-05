@@ -1,17 +1,18 @@
 import jwt from "../../config/jwt.js";
 
-async function isAuthenticated(req,res,next){
+async function playerIdMiddleware(req,res,next){
   const authorization = req.headers.authorization;
+  req.player_id = null;
   if(!authorization){
-      return res.status(401).json({error:"jwt token needed"});
+      return next ();
   }
   const token = authorization.replace("Bearer ","");
   const verified = jwt.verify(token);
   if(verified.error){
-      return res.status(401).json({error:"jwt token not correct"});
+      return next();
   }
   req.player_id = verified.player_id;
   next();
 }
 
-export default isAuthenticated;
+export default playerIdMiddleware;

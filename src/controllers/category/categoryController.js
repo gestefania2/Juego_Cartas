@@ -21,7 +21,7 @@ async function createCategory(categoryId, categoryName, categoryDescription, pla
 }
 
 async function updateCategory(categoryId, categoryName, categoryDescription, playerId) {
-    const updateCategory = await Category.findByPk(id);
+    const updateCategory = await categoryModel.findByPk(id);
     updateCategory.category_name = categoryName || updateCategory.category_name;
     updateCategory.category_description = categoryDescription || updateCategory.category_description;
     updateCategory.player_id = playerId || updateCategory.player_id;
@@ -31,7 +31,7 @@ async function updateCategory(categoryId, categoryName, categoryDescription, pla
 }
 
 async function removeCategory(id) {
-    const removeCategory = await Category.findByPk(id);
+    const removeCategory = await categoryModel.findByPk(id);
     await removeCategory.destroy();
     return { message: 'Categoría eliminada correctamente' };
 }

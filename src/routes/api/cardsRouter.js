@@ -1,19 +1,20 @@
 import { Router } from "express";
 import cardApiController  from "../../controllers/card/cardApiController.js";
+import playerIdMiddleware from "../../middlewares/api/playerIdMiddleware.js";
 
 const router = Router();
 
-router.get("/",cardApiController.getAllCards);
+router.get("/list",cardApiController.getAllCards);
 
-router.get("/:id",cardApiController.getCardById);
+router.get("/:id",cardApiController.getCardById); // te da cualquier carta por id (pregunta o respuesta)
 
-router.get ("/qa/:categoryId/:total_players",cardApiController.getQuestionAndAnswersCardsByCategory); //getQuestionAndAnswersCardsByCategory
+//router.get("list/:categoryId",cardApiController.getAllCardsByCategory); //Obtener todas las cartas de una categoría.
 
-router.post ("/",cardApiController.createCard);
+//router.get("/question/:categoryId",cardApiController.getQuestionCardByCategory); //Obtener todas las cartas de tipo question de una categoría.
 
-router.put ("/:id",cardApiController.updateCard);
+//router.get("/answer/:categoryId",cardApiController.getAnswerCardByCategory); //Obtener todas las cartas de tipo answer de una categoría. 
 
-router.delete ("/:id",cardApiController.removeCard);
+router.get ("/qa/:categoryId/:total_players", cardApiController.getQuestionAndAnswersCardsByCategory); //Obtener 1 carta pregunta y 5 respuestas por categoría.
 
 
 export default router;

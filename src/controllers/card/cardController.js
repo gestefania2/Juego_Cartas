@@ -2,8 +2,11 @@ import cardModel from "../../models/cardModel.js";
 import categoryModel from "../../models/categoryModel.js";
 import { Sequelize } from "sequelize";
 
-async function getAllCards() {
+async function getAllCards(player_id=null) {
     const cards = await cardModel.findAll({
+        where: {
+            player_id
+        }
     });
     return cards;
 }
@@ -15,7 +18,8 @@ async function getCardById(id) {
 async function getAllCardsByCategory(categoryId) {
     const cards = await cardModel.findAll({
         where: {
-            category_id: categoryId
+            category_id: categoryId,
+            player_id: null
         }
     });
     return cards;
@@ -41,11 +45,13 @@ async function getAnswerCardByCategory(categoryId) {
     return cards;
 }
 
-async function getRandomQuestionCardByCategory(categoryId) {
+async function getRandomQuestionCardByCategory(categoryId, player_id=null) {
     const cards = await cardModel.findAll({
         where: {
             category_id: categoryId,
-            type: 'question'
+            type: 'question',
+            player_id 
+
         },
         include: [{
             model: categoryModel,  // Asegúrate de tener el modelo Category definido
@@ -61,11 +67,12 @@ async function getRandomQuestionCardByCategory(categoryId) {
 }
 
 
-async function getRandomAnswerCardsByCategory(categoryId, total_cards=5) {
+async function getRandomAnswerCardsByCategory(categoryId, total_cards=5, player_id=null) {
     const cards = await cardModel.findAll({
         where: {
             category_id: categoryId,
-            type: 'answer'
+            type: 'answer',
+            player_id 
         },
         include: [{
             model: categoryModel,  // Asegúrate de tener el modelo Category definido
@@ -80,32 +87,36 @@ async function getRandomAnswerCardsByCategory(categoryId, total_cards=5) {
     return cards;
 }
 
-async function getQuestionAndAnswersCardsByCategory(categoryId,total_players) {
+async function getQuestionAndAnswersCardsByCategory(categoryId,total_players,player_id=null) {
     const total_cards = parseInt(total_players) + 4;
     const question = await getRandomQuestionCardByCategory(categoryId);
-    const answers = await getRandomAnswerCardsByCategory(categoryId, total_cards);
+    const answers = await getRandomAnswerCardsByCategory(categoryId, total_cards, player_id);
     return { question, answers };
 }
-async function createCard(text, type, categoryId) {
+async function createCard(text, type, categoryId, player_id) {
     const newCard = await cardModel.create({
         text,
         type,
-        category_id: categoryId
+        category_id: categoryId,
+        player_id
+
     });
     return newCard;
 }
 
-async function updateCard(categoryId, text, type) {
-    const updateCard = await Card.findByPk(id);
-    updateCard.text = text || updateCard.text;
-    updateCard.type = type || updateCard.type;
-    updateCard.category_id = categoryId || updateCard.category_id;
-    await updateCard.save();
-    return updateCard;
+
+
+async function updateCardById(cardId, text, type, categoryId) {
+    const updateCardById = await cardModel.findByPk(cardId);
+    updateCardById.text = text || updateCardById.text;
+    updateCardById.type = type || updateCardById.type;
+    updateCardById.category_id = categoryId || updateCardById.category_id;
+    await updateCardById.save();
+    return updateCardById;
 }
 
-async function removeCard(id) {
-    const removeCard = await Card.findByPk(id);
+async function removeCard(card_id) {
+    const removeCard = await cardModel.findByPk(card_id);
     await removeCard.destroy();
     return { message: 'Carta eliminada correctamente' };
 }
@@ -122,7 +133,7 @@ export const functions = {
     getRandomQuestionCardByCategory,
     getQuestionAndAnswersCardsByCategory,
     createCard,
-    updateCard,
+    updateCardById,
     removeCard
     
 }

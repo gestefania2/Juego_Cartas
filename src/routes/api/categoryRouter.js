@@ -1,16 +1,19 @@
 import { Router } from "express";
 import categoryApiController  from "../../controllers/category/categoryApiController.js";
-
+import isAuthenticated from "../../middlewares/api/authMiddleware.js";
 const router = Router();
 
-//router.get("/",categoryApiController.getAllcategories);
+router.get("/list",categoryApiController.getAllCategories);
+
 router.get("/:id",categoryApiController.getCategoryById);
 
-router.post ("/",categoryApiController.createCategory);
+router.post ("/new",isAuthenticated,categoryApiController.createCategory);
 
-//router.put ("/:id",categoryApiController.updateCategory);
+router.put ("/:id/update",isAuthenticated,categoryApiController.updateCategory);
 
-//router.delete ("/:id",categoryApiController.removeCategory);
+router.delete ("/:id",isAuthenticated,categoryApiController.removeCategory);
 
 
 export default router;
+
+//estan bién definidas las rutas?
