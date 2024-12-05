@@ -1,9 +1,14 @@
-# Sin Vergüenza: Una App Móvil para Conectar y Divertirse
+# Sin Vergüenza: Una App Móvil de juego de cartas para conectar y divertirse
+**Ríete sin preocuparte por lo políticamente correcto. Un juego con un toque pícaro y atrevido.**
 
-**Este juego te hará reír sin preocuparte por lo políticamente correcto, con un toque pícaro y atrevido.**
 
 ## 🃏 Descripción General
-"Sin Vergüenza" es una aplicación móvil diseñada como herramienta para jugar e interactuar en grupo, fomentando la interacción personal fuera del entorno digital. El objetivo es pasar un buen rato con amigos mientras se compite en creatividad y originalidad.
+
+"Sin Vergüenza" es una aplicación móvil para jugara a cartas, diseñada como herramienta de juego e interacción en grupo, fomentando así la interacción personal fuera del entorno digital. El objetivo es pasar un buen rato con amigos mientras se compite en creatividad y originalidad.
+
+- Pensada para que cualqueir usuario (jugador) entre sin logearse y pueda jugar con las cartas que da la app por defecto. 
+- Se establecerá una opción de registro. El usuario desde aquí podrá crear sus propias cartas y categorías, pudiendolas modificar y borrar.
+
 
 ## 🎲 Mecánica del Juego
 
@@ -22,7 +27,7 @@
 - Se seleccionará al ganador mediante una votación en tiempo real entre los jugadores.
 - La respuesta más original, según la mayoría, será declarada la ganadora.
 
-## Dinámica del Juego
+## 😂 Dinámica del Juego
 El juego está basado en preguntas y respuestas, inspirado en Cartas Contra la Humanidad, pero con una innovación: la incorporación de categorías temáticas.
 
 **Selección de Opciones Iniciales**:
@@ -55,9 +60,9 @@ Los jugadores pueden refrescar las preguntas o respuestas en cualquier momento s
 
     **Columnas**:
     - player_id (INT, Primary Key): Identificador único del jugador.
-- player_name (VARCHAR(50)): Nombre del jugador.
-- email (VARCHAR(100)): Correo electrónico del jugador.
-- password (VARCHAR(100)): Contraseña en formato seguro. "HASH"
+    - player_name (VARCHAR(50)): Nombre del jugador.
+    - email (VARCHAR(100)): Correo electrónico del jugador.
+    - password (VARCHAR(100)): Contraseña en formato seguro. "HASH"
 
 2. CATEGORY: Almacena las categorías disponibles para las cartas.
 
@@ -91,7 +96,11 @@ En este caso las tablas se unen con líneas discontinuas porque la relación ent
 
 ## 🛠️ Instalación y configuración 
 
+
+
 ## 📡 Endpoints de la API
+
+
 
 
 ## 🚧 Estado del Proyecto
