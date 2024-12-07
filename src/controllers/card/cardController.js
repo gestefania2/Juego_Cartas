@@ -2,6 +2,11 @@ import cardModel from "../../models/cardModel.js";
 import categoryModel from "../../models/categoryModel.js";
 import { Sequelize } from "sequelize";
 
+/**
+ * Obtiene todas las cartas de la base de datos, las de un jugador en particular, o las de una categoría en particular.
+ * @param {number} [player_id] - El ID del jugador para obtener sus cartas. Si no se proporciona, se obtienen todas las cartas.
+ * @returns {Promise<Card[]>} - Una promesa que resuelve con un array de cartas.
+ */
 async function getAllCards(player_id=null) {
     const cards = await cardModel.findAll({
         where: {
@@ -11,10 +16,18 @@ async function getAllCards(player_id=null) {
     return cards;
 }
 
+
+/**
+ * Obtiene una carta por su ID.
+ * @param {number} id - El ID de la carta.
+ * @returns {Promise<Card | null>} - Una promesa que resuelve con la carta encontrada, o null si no se encontró.
+ */
 async function getCardById(id) {
     const card = await cardModel.findByPk(id);
     return card;
 }
+
+
 async function getAllCardsByCategory(categoryId) {
     const cards = await cardModel.findAll({
         where: {

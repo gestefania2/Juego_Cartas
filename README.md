@@ -4,13 +4,13 @@
 
 ## 🃏 Descripción General
 
-"Sin Vergüenza" es una aplicación móvil para jugara a cartas, diseñada como herramienta de juego e interacción en grupo, fomentando así la interacción personal fuera del entorno digital. El objetivo es pasar un buen rato con amigos mientras se compite en creatividad y originalidad.
+"Sin Vergüenza" es una aplicación móvil para jugar a cartas, diseñada como herramienta de juego e interacción en grupo. E objetivo es fomentar la interacción personal fuera del entorno digital y pasar un buen rato con amigos mientras se compite en creatividad y originalidad.
 
 - Pensada para que cualqueir usuario (jugador) entre sin logearse y pueda jugar con las cartas que da la app por defecto. 
 - Se establecerá una opción de registro. El usuario desde aquí podrá crear sus propias cartas y categorías, pudiendolas modificar y borrar.
 
 
-## 🎲 Mecánica del Juego
+## 🎲 Mecánica Del Juego
 
 **Determinación de Turnos Iniciales**:
 
@@ -27,7 +27,7 @@
 - Se seleccionará al ganador mediante una votación en tiempo real entre los jugadores.
 - La respuesta más original, según la mayoría, será declarada la ganadora.
 
-## 😂 Dinámica del Juego
+## 😂 Dinámica Del Juego
 El juego está basado en preguntas y respuestas, inspirado en Cartas Contra la Humanidad, pero con una innovación: la incorporación de categorías temáticas.
 
 **Selección de Opciones Iniciales**:
@@ -52,34 +52,34 @@ La votación define al ganador de la partida, quien inicia el próximo turno en 
 
 Los jugadores pueden refrescar las preguntas o respuestas en cualquier momento si desean generar nuevas opciones.
 
-## 📊 Estructura de la Base de Datos
+## 📊 Estructura De La Base De Datos
 
 **Tablas y Estructuras**
 
 1. PLAYERS: Almacena información de los jugadores.
 
     **Columnas**:
-    - player_id (INT, Primary Key): Identificador único del jugador.
-    - player_name (VARCHAR(50)): Nombre del jugador.
-    - email (VARCHAR(100)): Correo electrónico del jugador.
-    - password (VARCHAR(100)): Contraseña en formato seguro. "HASH"
+    - **player_id** (INT, Primary Key): Identificador único del jugador.
+    - **player_name** (VARCHAR(50)): Nombre del jugador.
+    - **email** (VARCHAR(100)): Correo electrónico del jugador.
+    - **password** (VARCHAR(100)): Contraseña en formato seguro. "HASH"
 
 2. CATEGORY: Almacena las categorías disponibles para las cartas.
 
     **Columnas**:
-    - category_id (INT, Primary Key): Identificador único de la categoría.
-    - category_name (VARCHAR(100)): Nombre de la categoría.
-    - category_description (VARCHAR(400)): Descripción de la categoría.
-    - player_id (INT, Foreign Key): Relación con el jugador creador o responsable.
+    - **category_id** (INT, Primary Key): Identificador único de la categoría.
+    - **category_name** (VARCHAR(100)): Nombre de la categoría.
+    - **category_description** (VARCHAR(400)): Descripción de la categoría.
+    - **player_id** (INT, Foreign Key): Relación con el jugador creador o responsable.
 
 3. CARDS: Almacena las cartas que serán utilizadas en el juego, asociadas a las categorías.
 
     **Columnas**:
-    - card_id (INT, Primary Key): Identificador único de la carta.
-    - text (VARCHAR(300)): Texto de la carta (pregunta o respuesta).
-    - type (ENUM): Define si la carta es de tipo "pregunta" o "respuesta".
-    - category_id (INT, Foreign Key): Relación con la categoría correspondiente.
-    - player_id (INT, Foreign Key): Relación con el jugador que creó la carta.
+    - **card_id** (INT, Primary Key): Identificador único de la carta.
+    - **text** (VARCHAR(300)): Texto de la carta (pregunta o respuesta).
+    - **type** (ENUM): Define si la carta es de tipo "pregunta" o "respuesta".
+    - **category_id** (INT, Foreign Key): Relación con la categoría correspondiente.
+    - **player_id** (INT, Foreign Key): Relación con el jugador que creó la carta.
 
 **Relaciones entre Tablas**
 
@@ -94,16 +94,81 @@ Los jugadores pueden refrescar las preguntas o respuestas en cualquier momento s
 
 En este caso las tablas se unen con líneas discontinuas porque la relación entre las entidades no es estricta o siempre presente. Una de las entidades puede estar relacionada de forma opcional con la otra.
 
-## 🛠️ Instalación y configuración 
+
+## 🖥️ Tecnologías Utilizadas
+
+- **Backend**:
+- JavaScript  
+- Sequelize
+- Node.js    
+- Express.js  
+- MySQL (Base de datos) 
+- Docker 
+
+
+## 🛠️ Instalación Y Configuración 
+
+**Requisitos imprescindibles**
+
+(Para descargar/clonar el proyecto)
+- **[Git](git-scm.com.)** 
+
+(Para poder ejecutarlo)
+- **[Visual Studio Code](https://code.visualstudio.com/download)** (ten en cuenta tu sistema operativo y procesador)
+- **[Node.js](https://nodejs.org/)** (v14 o superior)
+- **[MySQL](https://www.mysql.com/)** (v5.7 o superior)
 
 
 
-## 📡 Endpoints de la API
+1. Abrir Terminal
+   
+- Abre la terminal (bash) el directorio donde quieres clonar el repositorio 
+
+  Ej: cd Proyectos
+
+2. Clonar Repositorio 
+- Una vez estes en la carpeta donde quieres clonar el repositorio escribe en terminal (bash):
+
+git clone git@github.com:gestefania2/Juego_Cartas.git
+
+3. Abrir proyecto en Visual Studio Code
+
+- code Juego_Cartas
+
+4. Abre una terminal (bash) en el proyecto e instala las dependencias, escribe:
+
+- npm install
+
+5. Configurar las variables de entorno:
+- Crea un archivo dentro del proyecto "Juego_Cartas" en Visual Studio Code que se llame `.env` siguiendo el archivo de referencia de `.env. example`:
+
+    APP_HOST=sinverguenza
+    APP_PORT=3000
+    DB_HOST=sinverguenzadb
+    DB_PORT=3308
+    DB_USER=stef
+    DB_PASSWORD=12345
+    DB_DATABASE=juego_cartas
+    DB_ROOT_PASSWORD=12345
+    DB_DIALECT=mysql 
+    SESSION_SECRET=clave_secreta
+    JWT_SECRET=sinverguenza*45
+
+6. Inicia docker para poner los contenedores en marcha (backend y base de datos)
+- Desde el Visual Studio Code abre una nueva terminal (bash) y escribe:
+
+docker compose up --build
+
+
+## 📡 Endpoints De La API
+
+La interfaz de momento estará disponible como API para obtener información en: `http://localhost:3000` 
 
 
 
 
-## 🚧 Estado del Proyecto
+
+## 🚧 Estado Del Proyecto
 
 **En desarrollo activo**: Falta por implementar la parte del  front-end para que sea un juego visual e interactivo para conseguir que la experiencia de usuario en la interfaz sea ópttima.
 

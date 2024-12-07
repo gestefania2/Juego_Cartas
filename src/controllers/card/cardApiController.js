@@ -1,10 +1,25 @@
 import cardController from "../../controllers/card/cardController.js";
+
+
+/**
+ * Obtiene todas las cartas.
+ * Si el jugador no está autentificado, devuelve todas las cartas sin el campo "player_id".
+ * @param {Object} req - El objeto de solicitud.
+ * @param {Object} res - La respuesta de la solicitud.
+ */
+
 async function getAllCards(req, res) {
     const player_id = req.player_id;
     const cards = await cardController.getAllCards(player_id);
     res.json(cards);
 }
 
+/**
+ * Obtiene una carta por su ID.
+ * 
+ * @param {Object} req - El objeto de solicitud que contiene el ID de la carta.
+ * @param {Object} res - El objeto de respuesta utilizado para enviar la carta en formato JSON.
+ */
 async function getCardById(req, res) {
     const id = parseInt(req.params.id);
     const card = await cardController.getCardById(id);
@@ -12,9 +27,20 @@ async function getCardById(req, res) {
 
 }
 
-// Obtener todas las cartas de una categoría específica
+/** 
+ * Obtiene todas las cartas de una categoría dada.
+ * 
+ * @param {Object} req - El objeto de solicitud que contiene el ID de la categoría en los parámetros de la URL.
+ * @param {Object} res - La respuesta de la solicitud devuelve las cartas de la categoría en formato JSON.
+ * 
+ * @returns {Promise<Response>} - Una respuesta JSON que contiene las cartas de la categoría,
+ * o un mensaje de error en caso de que no se encuentren cartas en la categoría.
+ * 
+ * @throws {Error} - Returns a 404 error if no cards are found in the category, or a 500 error
+ * if there is an issue retrieving the cards.
+ */
 async function getAllCardsByCategory(req, res) {
-    const categoryId = req.params.categoryId; // Obtén el categoryId de los parámetros de la URL
+    const categoryId = req.params.categoryId; 
 
     try {
         const cards = await cardController.findAll({
@@ -31,8 +57,17 @@ async function getAllCardsByCategory(req, res) {
         return res.status(500).json({ error: 'Error al obtener las cartas de la categoría' });
     }
 }
-
-// Obtener todas las cartas de tipo 'question' para una categoría específica
+/**
+ * Obtiene todas las cartas de tipo "question" de una categoría dada.
+ * 
+ * @param {Object} req - El objeto de solicitud que contiene el ID de la categoría en los parámetros de la URL.
+ * @param {Object} res - La respuesta de la solicitud devuelve las cartas de tipo "question" en formato JSON.
+ * 
+ * @returns {Promise<Response>} - Una respuesta JSON que contiene las cartas de tipo "question" de la categoría,
+ * o un mensaje de error en caso de que no se encuentren cartas de tipo "question" en la categoría.
+ * 
+ * @throws {Error} - Si no se encuentran las cartas de tipo "question" en la categoría devuelve un error 404, o un error 500 si hay un problema al obtener las cartas.
+ */
 async function getQuestionCardByCategory(req, res) {
     const categoryId = req.params.categoryId;
 
@@ -48,7 +83,7 @@ async function getQuestionCardByCategory(req, res) {
             return res.status(404).json({ message: 'No se encontraron cartas de tipo "question" en esta categoría' });
         }
 
-        return res.json(cards);  // Devuelve las cartas de tipo "question" en formato JSON
+        return res.json(cards);  
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: 'Error al obtener las cartas de tipo "question"' });
@@ -56,7 +91,17 @@ async function getQuestionCardByCategory(req, res) {
 }
 
 
-
+/**
+ * Obtiene una carta de tipo "question" y varias cartas de tipo "answer" para una categoría dada.
+ * 
+ * @param {Object} req - El objeto de solicitud que contiene el ID de la categoría, el número total de jugadores y el ID del jugador autenticado.
+ * @param {Object} res - El objeto de respuesta utilizado para enviar la carta "question" y las cartas "answers" en formato JSON.
+ * 
+ * @returns {Promise<Response>} - Una respuesta JSON que contiene una carta de tipo "question" y varias cartas de tipo "answer",
+ * o un mensaje de error en caso de que ocurra un problema al obtener las cartas.
+ * 
+ * @throws {Error} - Devuelve un error 500 si hay un problema al obtener las cartas.
+ */
 async function getQuestionAndAnswersCardsByCategory(req, res) {
     const categoryId = req.params.categoryId;
     const total_players = req.params.total_players;
@@ -71,6 +116,14 @@ async function getQuestionAndAnswersCardsByCategory(req, res) {
     }
 }
 
+/**
+ * Crea una nueva carta en la base de datos.
+ * 
+ * @param {Object} req - El objeto de solicitud que contiene los datos de la nueva carta en el cuerpo de la solicitud.
+ * @param {Object} res - El objeto de respuesta utilizado para enviar la carta creada en formato JSON.
+ * 
+ * @returns {Promise<Response>} - Una respuesta JSON que contiene la carta creada.
+ */
 async function createCard(req, res) {
     const { text, type, category_id } = req.body;
     const player_id = req.player_id;
@@ -78,8 +131,15 @@ async function createCard(req, res) {
     res.json({card:newCard});
 }
 
-
-
+/**
+ * Actualiza una carta por su ID.
+ * 
+ * @param {Object} req - El objeto de solicitud que contiene el ID de la carta en los parámetros
+ * y los datos de la carta a actualizar en el cuerpo de la solicitud.
+ * @param {Object} res - El objeto de respuesta utilizado para enviar la carta actualizada en formato JSON.
+ * 
+ * @returns {Promise<Response>} - Una respuesta JSON que contiene la carta actualizada.
+ */
 async function updateCardById(req, res) {
     const {text, type, category_id} = req.body;
     const id = parseInt(req.params.id);
@@ -87,12 +147,34 @@ async function updateCardById(req, res) {
     res.json({card:updateCardById});
 }
 
+/**
+ * Elimina una carta por su ID.
+ * 
+ * @param {Object} req - El objeto de solicitud que contiene el ID de la carta en los parámetros.
+ * @param {Object} res - El objeto de respuesta utilizado para enviar la carta eliminada en formato JSON.
+ * 
+ * @returns {Promise<Response>} - Una respuesta JSON que contiene la carta eliminada.
+ * 
+ * @throws {Error} - Si el ID de la carta es inválido devuelve un error 400, si no se encuentra la carta devuelve un error 404, o un error 500 si hay un problema al eliminar la carta.
+ */
 async function removeCard(req, res) {
-    const id = parseInt(req.params.id);
-    const removeCard = await cardController.removeCard(id);
-    res.json({card:removeCard});
-}
+    try {
+        const id = parseInt(req.params.id);
+        if (isNaN(id)) {
+            return res.status(400).json({ error: "Id de carta inválido" });
+        }
+        
+        const removeCard = await cardController.removeCard(id);
+        if (!removeCard) {
+            return res.status(404).json({ error: "No se encontró la carta" });
+        }
 
+        res.json({ card: removeCard });
+    } catch (error) {
+        console.error("Ha ocurrido un error:", error); 
+        res.status(500).json({ error: "Ha ocurrido un error al eliminar la carta" });
+    }
+}
 export const functions = {
     getAllCards,
     getCardById,
