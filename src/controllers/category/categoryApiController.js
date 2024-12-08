@@ -10,7 +10,8 @@ import categoryController from "./categoryController.js";
  * @returns {Promise<void>} - Una promse que se resuelve cuando se obtienen y se envian las categorías.
  */
 async function getAllCategories(req, res) {
-    const categories = await categoryController.getAllCategories();
+    const player_id = req.player_id;
+    const categories = await categoryController.getAllCategories(player_id);
     res.json(categories);
 }
 
@@ -28,27 +29,39 @@ async function getCategoryById(req, res) {
     res.json(category);
 }
 
-
 async function createCategory(req, res) {
-    const { categoryId, categoryName, categoryDescription, playerId } = req.body;
-    const newCategory = await categoryController.createCategory(categoryId, categoryName, categoryDescription, playerId);
-    res.json(newCategory);
-
+    const { category_name, category_description, categoryId } = req.body;
+    const player_id = req.player_id;
+    const newCategory = await categoryController.createCategory(category_name, category_description, categoryId, player_id);
+    res.json({category:newCategory});
 }
 
+
 async function updateCategory(req, res) {
-    const { categoryName, categoryDescription, playerId } = req.body; // Extrae datos del cuerpo de la solicitud
-    const categoryId = parseInt(req.params.id); //Convierte este parámetro a un número entero usando parseInt, ya que los parámetros de las rutas suelen llegar como cadenas de texto.
-    const updateCategory = await categoryController.updateCategory(categoryId, categoryName, categoryDescription, playerId); // Llama a un controlador para actualizar la categoría en la base de datos
-    res.json({category:updateCategory});
+    const { category_name, category_description } = req.body;
+    const id = parseInt(req.params.id);
+    const updateCategoryById = await categoryController.updateCategory(id, category_name, category_description);
+    res.json({category:updateCategoryById});
 }
 
 async function removeCategory(req, res) {
-    const id = parseInt(req.params.id); 
-    const removeCategory = await categoryController.removeCategory(id);
-    res.json({category:removeCategory});
-}
+    try {
+        const id = parseInt(req.params.id);
+        if (isNaN(id)) {
+            return res.status(400).json({ error: "Id de categoria inválido" });
+        }
+        
+        const removeCategory = await categoryController.removeCategory(id);
+        if (!removeCategory) {
+            return res.status(404).json({ error: "No se encontró la categoría" });
+        }
 
+        res.json({ category: removeCategory });
+    } catch (error) {
+        console.error("Ha ocurrido un error:", error); 
+        res.status(500).json({ error: "Ha ocurrido un error al eliminar la categoría" });
+    }
+}
 export const functions = {
     getAllCategories,
     getCategoryById,

@@ -1,7 +1,11 @@
 import categoryModel from "../../models/categoryModel.js";
 
-async function getAllCategories() {
-    const categories = await categoryModel.findAll();
+async function getAllCategories(player_id=null) {
+    const categories = await categoryModel.findAll({
+        where: {
+            player_id
+        }
+    });
     return categories;
 }
 
@@ -10,28 +14,28 @@ async function getCategoryById(id) {
     return category;
 }
 
-async function createCategory(categoryId, categoryName, categoryDescription, playerId) {
+async function createCategory(category_name, category_description, categoryId, player_id) {
     const newCategory = await categoryModel.create({
+        category_name, 
+        category_description,
         category_id: categoryId,
-        category_name: categoryName,
-        category_description: categoryDescription,
-        player_id: playerId
+        player_id
+
     });
     return newCategory;
 }
 
-async function updateCategory(categoryId, categoryName, categoryDescription, playerId) {
-    const updateCategory = await categoryModel.findByPk(id);
-    updateCategory.category_name = categoryName || updateCategory.category_name;
-    updateCategory.category_description = categoryDescription || updateCategory.category_description;
-    updateCategory.player_id = playerId || updateCategory.player_id;
-    await updateCategory.save();
-    return updateCategory;
-    
+
+async function updateCategory(categoryId, category_name , category_description) {
+    const updateCategoryById = await categoryModel.findByPk(categoryId);
+    updateCategoryById.category_name = category_name || updateCategoryById.category_name;
+    updateCategoryById.category_description = category_description || updateCategoryById.category_description;
+    await updateCategoryById.save();
+    return updateCategoryById;
 }
 
-async function removeCategory(id) {
-    const removeCategory = await categoryModel.findByPk(id);
+async function removeCategory(category_id) {
+    const removeCategory = await categoryModel.findByPk(category_id);
     await removeCategory.destroy();
     return { message: 'Categoría eliminada correctamente' };
 }
