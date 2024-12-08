@@ -328,7 +328,7 @@ INSERT INTO `juego_cartas`.`cards`(`text`, `type`, `category_id`) VALUES
 ('*Tener que pedir ayuda para liberar una mano atrapada.*', 'answer', 5),
 ('*Un día en la playa que terminó con arena por todas partes.*', 'answer', 5),
 ('*Un disfraz de pirata con parche en el ojo… muy poco práctico.*', 'answer', 5),
-('*Un edredón eléctrico que empezó a recalentar.', 'answer*', 5),
+('*Un edredón eléctrico que empezó a recalentar.*', 'answer', 5),
 ('*Pedir ayuda para ponerme un arnés y perder toda la magia.*', 'answer', 5);
 
 INSERT INTO `juego_cartas`.`players` (`player_name`, `email`, `password`) VALUES 

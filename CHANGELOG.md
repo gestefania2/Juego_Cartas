@@ -11,10 +11,9 @@
     -  Archivo .env para gestionar las variables de entorno.
 5. Implementación de endpoints básicos para interactuar con la base de datos:
 
-
-
-**meter endpoints**
-
+- {{base_url}}/card/qa/category_id/total_players `Obtiene una pregunta y las respuestas por número de jugadores` (GET)
+- {{base_url}}/register `Registrase`
+- {{base_url}}/login `Logearse`
 
 
 6. Configuración inicial de seguridad:

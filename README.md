@@ -178,8 +178,8 @@ La interfaz de momento estará disponible como API para obtener información en 
 - {{base_url}}/player/card/new `Crear una carta para una categoría` (POST)
 - {{base_url}}/player/update/card/card_id `Actualizar una carta creada`(PUT)
 - {{base_url}}/player/delete/card/card_id `Borrar una carta creada`(DEL)
-- {{base_url}}/register `Registrase`
-- {{base_url}}/register `Logearse`
+- {{base_url}}/register `Registrase` (POST)
+- {{base_url}}/login `Logearse` (POST)
 
 
 
