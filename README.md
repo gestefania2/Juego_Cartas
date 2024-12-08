@@ -162,15 +162,30 @@ docker compose up --build
 
 ## 📡 Endpoints De La API
 
-La interfaz de momento estará disponible como API para obtener información en: `http://localhost:3000` 
+La interfaz de momento estará disponible como API para obtener información en la {{base_url}}: `http://localhost:3000` desde POSTMAN https://www.postman.com/downloads/ 
 
+1. **CARDS**
+- {{base_url}}/card/qa/category_id/total_players `Obtiene una pregunta y las respuestas por número de jugadores` (GET)
+- {{base_url}}/card/list `Obtiene todas las tarjetas (preguntas y respuestas) de cualquier categoría` (GET)
+- {{base_url}}/card/card_id `Obtiene una tarjeta aleatoria por ID (preguntas y respuestas)` (GET)
 
+2. **CATEGORIES**
+- {{base_url}}/category/list `Obtiene todas las categorías` (GET)
+- {{base_url}}/category/category_id `Obtiene la categoria por ID de categoría` (GET)
+
+3. **PLAYERS**
+- {{base_url}}/player/card/list?category_id&text&type `Obtiene todas las cartas que ha creado el jugador` (GET)
+- {{base_url}}/player/card/new `Crear una carta para una categoría` (POST)
+- {{base_url}}/player/update/card/card_id `Actualizar una carta creada`(PUT)
+- {{base_url}}/player/delete/card/card_id `Borrar una carta creada`(DEL)
+- {{base_url}}/register `Registrase`
+- {{base_url}}/register `Logearse`
 
 
 
 ## 🚧 Estado Del Proyecto
 
-**En desarrollo activo**: Falta por implementar la parte del  front-end para que sea un juego visual e interactivo para conseguir que la experiencia de usuario en la interfaz sea ópttima.
+**En desarrollo activo**: Falta por implementar la parte del front-end con React para que el juego sea visual e interactivo y poder conseguir que la experiencia de usuario en la interfaz sea ópttima.
 
 ## Desarrolladora del Back-End
 - **[Estefanía](https://github.com/gestefania2)**
