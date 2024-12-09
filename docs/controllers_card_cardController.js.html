@@ -1,11 +1,39 @@
-import cardModel from "../../models/cardModel.js";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: controllers/card/cardController.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: controllers/card/cardController.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import cardModel from "../../models/cardModel.js";
 import categoryModel from "../../models/categoryModel.js";
 import { Sequelize } from "sequelize";
 
 /**
  * Obtiene todas las cartas de la base de datos, las de un jugador en particular, o las de una categoría en particular.
  * @param {number} [player_id] - El ID del jugador para obtener sus cartas. Si no se proporciona, se obtienen todas las cartas.
- * @returns {Promise<cardModel[]>} - Una promesa que resuelve con un array de cartas.
+ * @returns {Promise&lt;cardModel[]>} - Una promesa que resuelve con un array de cartas.
  */
 async function getAllCards(player_id=null) {
     const cards = await cardModel.findAll({
@@ -20,7 +48,7 @@ async function getAllCards(player_id=null) {
 /**
  * Obtiene una carta por su ID.
  * @param {number} id - El ID de la carta.
- * @returns {Promise<cardModel | null>} - Una promesa que resuelve con la carta encontrada, o null si no se encontró.
+ * @returns {Promise&lt;cardModel | null>} - Una promesa que resuelve con la carta encontrada, o null si no se encontró.
  */
 async function getCardById(id) {
     const card = await cardModel.findByPk(id);
@@ -31,7 +59,7 @@ async function getCardById(id) {
 /**
  * Obtiene todas las cartas de una categoría en particular.
  * @param {number} categoryId - El ID de la categoría.
- * @returns {Promise<cardModel[]>} - Una promesa que resuelve con un array de cartas de la categoría especificada.
+ * @returns {Promise&lt;cardModel[]>} - Una promesa que resuelve con un array de cartas de la categoría especificada.
  */
 async function getAllCardsByCategory(categoryId) {
     const cards = await cardModel.findAll({
@@ -46,7 +74,7 @@ async function getAllCardsByCategory(categoryId) {
 /**
  * Obtiene todas las cartas de tipo "question" de una categoría en particular.
  * @param {number} categoryId - El ID de la categoría.
- * @returns {Promise<cardModel[]>} - Una promesa que resuelve con un array de cartas de tipo "question" de la categoría especificada.
+ * @returns {Promise&lt;cardModel[]>} - Una promesa que resuelve con un array de cartas de tipo "question" de la categoría especificada.
  */
 async function getQuestionCardByCategory(categoryId) {
     const cards = await cardModel.findAll({
@@ -62,7 +90,7 @@ async function getQuestionCardByCategory(categoryId) {
  * Obtiene todas las cartas de tipo "answer" de una categoría dada.
  * 
  * @param {number} categoryId - El ID de la categoría.
- * @returns {Promise<cardModel[]>} - Una promesa que resuelve con un array de cartas de tipo "answer" de la categoría especificada.
+ * @returns {Promise&lt;cardModel[]>} - Una promesa que resuelve con un array de cartas de tipo "answer" de la categoría especificada.
  */
 async function getAnswerCardByCategory(categoryId) {
     const cards = await cardModel.findAll({
@@ -80,7 +108,7 @@ async function getAnswerCardByCategory(categoryId) {
  * @param {number} categoryId - El ID de la categoría de la que se desea obtener la carta.
  * @param {number|null} [player_id=null] - El ID del jugador para filtrar las cartas. Si no se proporciona, se considerarán todas las cartas.
  * 
- * @returns {Promise<cardModel|null>} - Una promesa que resuelve con una carta de tipo "question" aleatoria de la categoría especificada,
+ * @returns {Promise&lt;cardModel|null>} - Una promesa que resuelve con una carta de tipo "question" aleatoria de la categoría especificada,
  * o null si no se encuentran cartas.
  */
 async function getRandomQuestionCardByCategory(categoryId, player_id=null) {
@@ -112,7 +140,7 @@ async function getRandomQuestionCardByCategory(categoryId, player_id=null) {
  * @param {number} [total_cards=5] - El número total de cartas que se desean obtener. Por defecto se obtienen 5 cartas.
  * @param {number|null} [player_id=null] - El ID del jugador para filtrar las cartas. Si no se proporciona, se considerarán todas las cartas.
  * 
- * @returns {Promise<cardModel[]>} - Una promesa que resuelve con un array de cartas de tipo "answer" aleatorias de la categoría especificada.
+ * @returns {Promise&lt;cardModel[]>} - Una promesa que resuelve con un array de cartas de tipo "answer" aleatorias de la categoría especificada.
  */
 async function getRandomAnswerCardsByCategory(categoryId, total_cards=5, player_id=null) {
     const cards = await cardModel.findAll({
@@ -141,7 +169,7 @@ async function getRandomAnswerCardsByCategory(categoryId, total_cards=5, player_
  * @param {number} total_players - El número total de jugadores, que se utiliza para calcular el total de cartas "answer" que se obtendrán.
  * @param {number|null} [player_id=null] - El ID del jugador para filtrar las cartas. Si no se proporciona, se considerarán todas las cartas.
  * 
- * @returns {Promise<{question: Card, answers: Card[]}>} - Una promesa que resuelve con un objeto que contiene una carta de tipo "question" y un array de cartas de tipo "answer"
+ * @returns {Promise&lt;{question: Card, answers: Card[]}>} - Una promesa que resuelve con un objeto que contiene una carta de tipo "question" y un array de cartas de tipo "answer"
  */
 async function getQuestionAndAnswersCardsByCategory(categoryId,total_players,player_id=null) {
     const total_cards = parseInt(total_players) + 4;
@@ -158,7 +186,7 @@ async function getQuestionAndAnswersCardsByCategory(categoryId,total_players,pla
  * @param {number} categoryId - El ID de la categoría a la que se asignará la carta.
  * @param {number|null} [player_id=null] - El ID del jugador al que se asignará la carta. Si no se proporciona, se considerará que la carta no tiene dueño.
  * 
- * @returns {Promise<cardModel>} - Una promesa que resuelve con la carta creada.
+ * @returns {Promise&lt;cardModel>} - Una promesa que resuelve con la carta creada.
  */
 async function createCard(text, type, categoryId, player_id) {
     const newCard = await cardModel.create({
@@ -180,7 +208,7 @@ async function createCard(text, type, categoryId, player_id) {
  * @param {string} [type] - El nuevo tipo de la carta. Si no se proporciona, se mantiene el tipo actual.
  * @param {number} [categoryId] - El nuevo ID de la categoría de la carta. Si no se proporciona, se mantiene el ID actual.
  * 
- * @returns {Promise<Card>} - Una promesa que resuelve con la carta actualizada.
+ * @returns {Promise&lt;Card>} - Una promesa que resuelve con la carta actualizada.
  */
 async function updateCardById(cardId, text, type, categoryId) {
     const updateCardById = await cardModel.findByPk(cardId);
@@ -196,7 +224,7 @@ async function updateCardById(cardId, text, type, categoryId) {
  * 
  * @param {number} card_id - El ID de la carta que se desea eliminar.
  * 
- * @returns {Promise<{message: string}>} - Una promesa que resuelve con un objeto que contiene un mensaje con el resultado de la eliminación.
+ * @returns {Promise&lt;{message: string}>} - Una promesa que resuelve con un objeto que contiene un mensaje con el resultado de la eliminación.
  */
 async function removeCard(card_id) {
     const removeCard = await cardModel.findByPk(card_id);
@@ -221,4 +249,26 @@ export const functions = {
     
 }
 
-export default functions;
+export default functions;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#createCard">createCard</a></li><li><a href="global.html#createCategory">createCategory</a></li><li><a href="global.html#createPlayer">createPlayer</a></li><li><a href="global.html#getAllCards">getAllCards</a></li><li><a href="global.html#getAllCardsByCategory">getAllCardsByCategory</a></li><li><a href="global.html#getAllCategories">getAllCategories</a></li><li><a href="global.html#getAllPlayers">getAllPlayers</a></li><li><a href="global.html#getAnswerCardByCategory">getAnswerCardByCategory</a></li><li><a href="global.html#getCardById">getCardById</a></li><li><a href="global.html#getCategoryById">getCategoryById</a></li><li><a href="global.html#getPlayerByEmail">getPlayerByEmail</a></li><li><a href="global.html#getPlayerById">getPlayerById</a></li><li><a href="global.html#getQuestionAndAnswersCardsByCategory">getQuestionAndAnswersCardsByCategory</a></li><li><a href="global.html#getQuestionCardByCategory">getQuestionCardByCategory</a></li><li><a href="global.html#getRandomAnswerCardsByCategory">getRandomAnswerCardsByCategory</a></li><li><a href="global.html#getRandomQuestionCardByCategory">getRandomQuestionCardByCategory</a></li><li><a href="global.html#isAuthenticated">isAuthenticated</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#playerIdMiddleware">playerIdMiddleware</a></li><li><a href="global.html#register">register</a></li><li><a href="global.html#removeCard">removeCard</a></li><li><a href="global.html#removeCategory">removeCategory</a></li><li><a href="global.html#updateCardById">updateCardById</a></li><li><a href="global.html#updateCategory">updateCategory</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Mon Dec 09 2024 00:53:26 GMT+0100 (hora estándar de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

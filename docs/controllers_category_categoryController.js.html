@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: controllers/category/categoryController.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: controllers/category/categoryController.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import categoryModel from "../../models/categoryModel.js";
+
+/**
+ * Obtiene todas las categorías de la base de datos, filtradas por el ID del jugador si se proporciona.
+ * 
+ * @param {number|null} [player_id=null] - El ID del jugador para filtrar las categorías. Si no se proporciona, se considerarán todas las categorías.
+ * 
+ * @returns {Promise&lt;Array>} - Una promesa que se resuelve con un array de categorías.
+ */
+async function getAllCategories(player_id=null) {
+    const categories = await categoryModel.findAll({
+        where: {
+            player_id
+        }
+    });
+    return categories;
+}
+
+/**
+ * Obtiene una categoría por su ID.
+ * 
+ * @param {number} id - El ID de la categoría que se desea obtener.
+ * 
+ * @returns {Promise&lt;categoryModel|null>} - Una promesa que se resuelve con la categoría encontrada, o null si no se encuentra.
+ */
+async function getCategoryById(id) {
+    const category = await categoryModel.findByPk(id);
+    return category;
+}
+
+
+/**
+ * Crea una nueva categoría en la base de datos con los datos proporcionados.
+ * 
+ * @param {string} category_name - El nombre de la categoría a crear.
+ * @param {string} category_description - La descripción de la categoría.
+ * @param {number} categoryId - El ID de la categoría. 
+ * @param {number|null} player_id - El ID del jugador asociado a la categoría, si corresponde.
+ * 
+ * @returns {Promise&lt;categoryModel>} - Una promesa que se resuelve con la categoría creada.
+ */
+async function createCategory(category_name, category_description, categoryId, player_id) {
+    const newCategory = await categoryModel.create({
+        category_name, 
+        category_description,
+        category_id: categoryId,
+        player_id
+
+    });
+    return newCategory;
+}
+
+
+/**
+ * Actualiza una categoría por su ID.
+ * 
+ * @param {number} categoryId - El ID de la categoría que se desea actualizar.
+ * @param {string} [category_name] - El nuevo nombre de la categoría. Si no se proporciona, se mantiene el nombre actual.
+ * @param {string} [category_description] - La nueva descripción de la categoría. Si no se proporciona, se mantiene la descripción actual.
+ * 
+ * @returns {Promise&lt;categoryModel>} - Una promesa que se resuelve con la categoría actualizada.
+ */
+async function updateCategory(categoryId, category_name , category_description) {
+    const updateCategoryById = await categoryModel.findByPk(categoryId);
+    updateCategoryById.category_name = category_name || updateCategoryById.category_name;
+    updateCategoryById.category_description = category_description || updateCategoryById.category_description;
+    await updateCategoryById.save();
+    return updateCategoryById;
+}
+
+/**
+ * Elimina una categoría por su ID.
+ * 
+ * @param {number} category_id - El ID de la categoría que se desea eliminar.
+ * 
+ * @returns {Promise&lt;{message: string}>} - Una promesa que se resuelve con un objeto que contiene un mensaje de confirmación de eliminación.
+ */
+async function removeCategory(category_id) {
+    const removeCategory = await categoryModel.findByPk(category_id);
+    await removeCategory.destroy();
+    return { message: 'Categoría eliminada correctamente' };
+}
+
+export const functions = {
+    getAllCategories,
+    getCategoryById,
+    createCategory,
+    updateCategory,
+    removeCategory
+}
+
+export default functions;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#createCard">createCard</a></li><li><a href="global.html#createCategory">createCategory</a></li><li><a href="global.html#createPlayer">createPlayer</a></li><li><a href="global.html#getAllCards">getAllCards</a></li><li><a href="global.html#getAllCardsByCategory">getAllCardsByCategory</a></li><li><a href="global.html#getAllCategories">getAllCategories</a></li><li><a href="global.html#getAllPlayers">getAllPlayers</a></li><li><a href="global.html#getAnswerCardByCategory">getAnswerCardByCategory</a></li><li><a href="global.html#getCardById">getCardById</a></li><li><a href="global.html#getCategoryById">getCategoryById</a></li><li><a href="global.html#getPlayerByEmail">getPlayerByEmail</a></li><li><a href="global.html#getPlayerById">getPlayerById</a></li><li><a href="global.html#getQuestionAndAnswersCardsByCategory">getQuestionAndAnswersCardsByCategory</a></li><li><a href="global.html#getQuestionCardByCategory">getQuestionCardByCategory</a></li><li><a href="global.html#getRandomAnswerCardsByCategory">getRandomAnswerCardsByCategory</a></li><li><a href="global.html#getRandomQuestionCardByCategory">getRandomQuestionCardByCategory</a></li><li><a href="global.html#isAuthenticated">isAuthenticated</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#playerIdMiddleware">playerIdMiddleware</a></li><li><a href="global.html#register">register</a></li><li><a href="global.html#removeCard">removeCard</a></li><li><a href="global.html#removeCategory">removeCategory</a></li><li><a href="global.html#updateCardById">updateCardById</a></li><li><a href="global.html#updateCategory">updateCategory</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Mon Dec 09 2024 00:53:26 GMT+0100 (hora estándar de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

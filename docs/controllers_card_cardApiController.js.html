@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: controllers/card/cardApiController.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: controllers/card/cardApiController.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import cardController from "../../controllers/card/cardController.js";
+
+
+/**
+ * Obtiene todas las cartas.
+ * Si el jugador no está autentificado, devuelve todas las cartas sin el campo "player_id".
+ * @param {Object} req - El objeto de solicitud.
+ * @param {Object} res - La respuesta de la solicitud.
+ */
+
+async function getAllCards(req, res) {
+    const player_id = req.player_id;
+    const cards = await cardController.getAllCards(player_id);
+    res.json(cards);
+}
+
+/**
+ * Obtiene una carta por su ID.
+ * 
+ * @param {Object} req - El objeto de solicitud que contiene el ID de la carta.
+ * @param {Object} res - El objeto de respuesta utilizado para enviar la carta en formato JSON.
+ */
+async function getCardById(req, res) {
+    const id = parseInt(req.params.id);
+    const card = await cardController.getCardById(id);
+    res.json(card);
+
+}
+
+/** 
+ * Obtiene todas las cartas de una categoría dada.
+ * 
+ * @param {Object} req - El objeto de solicitud que contiene el ID de la categoría en los parámetros de la URL.
+ * @param {Object} res - La respuesta de la solicitud devuelve las cartas de la categoría en formato JSON.
+ * 
+ * @returns {Promise&lt;Response>} - Una respuesta JSON que contiene las cartas de la categoría,
+ * o un mensaje de error en caso de que no se encuentren cartas en la categoría.
+ * 
+ * @throws {Error} - Returns a 404 error if no cards are found in the category, or a 500 error
+ * if there is an issue retrieving the cards.
+ */
+async function getAllCardsByCategory(req, res) {
+    const categoryId = req.params.categoryId; 
+
+    try {
+        const cards = await cardController.findAll({
+            where: { category_id: categoryId }
+        });
+
+        if (cards.length === 0) {
+            return res.status(404).json({ message: 'No se encontraron cartas en esta categoría' });
+        }
+
+        return res.json(cards);  // Devuelve las cartas como respuesta JSON
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Error al obtener las cartas de la categoría' });
+    }
+}
+/**
+ * Obtiene todas las cartas de tipo "question" de una categoría dada.
+ * 
+ * @param {Object} req - El objeto de solicitud que contiene el ID de la categoría en los parámetros de la URL.
+ * @param {Object} res - La respuesta de la solicitud devuelve las cartas de tipo "question" en formato JSON.
+ * 
+ * @returns {Promise&lt;Response>} - Una respuesta JSON que contiene las cartas de tipo "question" de la categoría,
+ * o un mensaje de error en caso de que no se encuentren cartas de tipo "question" en la categoría.
+ * 
+ * @throws {Error} - Si no se encuentran las cartas de tipo "question" en la categoría devuelve un error 404, o un error 500 si hay un problema al obtener las cartas.
+ */
+async function getQuestionCardByCategory(req, res) {
+    const categoryId = req.params.categoryId;
+
+    try {
+        const cards = await cardController.findAll({
+            where: {
+                category_id: categoryId,
+                type: 'question'
+            }
+        });
+
+        if (cards.length === 0) {
+            return res.status(404).json({ message: 'No se encontraron cartas de tipo "question" en esta categoría' });
+        }
+
+        return res.json(cards);  
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Error al obtener las cartas de tipo "question"' });
+    }
+}
+
+
+/**
+ * Obtiene una carta de tipo "question" y varias cartas de tipo "answer" para una categoría dada.
+ * 
+ * @param {Object} req - El objeto de solicitud que contiene el ID de la categoría, el número total de jugadores y el ID del jugador autenticado.
+ * @param {Object} res - El objeto de respuesta utilizado para enviar la carta "question" y las cartas "answers" en formato JSON.
+ * 
+ * @returns {Promise&lt;Response>} - Una respuesta JSON que contiene una carta de tipo "question" y varias cartas de tipo "answer",
+ * o un mensaje de error en caso de que ocurra un problema al obtener las cartas.
+ * 
+ * @throws {Error} - Devuelve un error 500 si hay un problema al obtener las cartas.
+ */
+async function getQuestionAndAnswersCardsByCategory(req, res) {
+    const categoryId = req.params.categoryId;
+    const total_players = req.params.total_players;
+    const player_id = req.player_id;
+    console.log ("player id", player_id);
+    try {
+        const { question, answers } = await cardController.getQuestionAndAnswersCardsByCategory(categoryId, total_players, player_id);
+        return res.json({ question, answers });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Error al obtener las cartas de la categoría' });
+    }
+}
+
+/**
+ * Crea una nueva carta en la base de datos.
+ * 
+ * @param {Object} req - El objeto de solicitud que contiene los datos de la nueva carta en el cuerpo de la solicitud.
+ * @param {Object} res - El objeto de respuesta utilizado para enviar la carta creada en formato JSON.
+ * 
+ * @returns {Promise&lt;Response>} - Una respuesta JSON que contiene la carta creada.
+ */
+async function createCard(req, res) {
+    const { text, type, category_id } = req.body;
+    const player_id = req.player_id;
+    const newCard = await cardController.createCard(text, type, category_id, player_id);
+    res.json({card:newCard});
+}
+
+/**
+ * Actualiza una carta por su ID.
+ * 
+ * @param {Object} req - El objeto de solicitud que contiene el ID de la carta en los parámetros
+ * y los datos de la carta a actualizar en el cuerpo de la solicitud.
+ * @param {Object} res - El objeto de respuesta utilizado para enviar la carta actualizada en formato JSON.
+ * 
+ * @returns {Promise&lt;Response>} - Una respuesta JSON que contiene la carta actualizada.
+ */
+async function updateCardById(req, res) {
+    const {text, type, category_id} = req.body;
+    const id = parseInt(req.params.id);
+    const updateCardById = await cardController.updateCardById(id, text, type, category_id);
+    res.json({card:updateCardById});
+}
+
+/**
+ * Elimina una carta por su ID.
+ * 
+ * @param {Object} req - El objeto de solicitud que contiene el ID de la carta en los parámetros.
+ * @param {Object} res - El objeto de respuesta utilizado para enviar la carta eliminada en formato JSON.
+ * 
+ * @returns {Promise&lt;Response>} - Una respuesta JSON que contiene la carta eliminada.
+ * 
+ * @throws {Error} - Si el ID de la carta es inválido devuelve un error 400, si no se encuentra la carta devuelve un error 404, o un error 500 si hay un problema al eliminar la carta.
+ */
+async function removeCard(req, res) {
+    try {
+        const id = parseInt(req.params.id);
+        if (isNaN(id)) {
+            return res.status(400).json({ error: "Id de carta inválido" });
+        }
+        
+        const removeCard = await cardController.removeCard(id);
+        if (!removeCard) {
+            return res.status(404).json({ error: "No se encontró la carta" });
+        }
+
+        res.json({ card: removeCard });
+    } catch (error) {
+        console.error("Ha ocurrido un error:", error); 
+        res.status(500).json({ error: "Ha ocurrido un error al eliminar la carta" });
+    }
+}
+export const functions = {
+    getAllCards,
+    getCardById,
+    getAllCardsByCategory,
+    getQuestionCardByCategory,
+    getQuestionAndAnswersCardsByCategory,
+    createCard,
+    updateCardById,
+    removeCard
+}
+
+export default functions;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#createCard">createCard</a></li><li><a href="global.html#createCategory">createCategory</a></li><li><a href="global.html#createPlayer">createPlayer</a></li><li><a href="global.html#getAllCards">getAllCards</a></li><li><a href="global.html#getAllCardsByCategory">getAllCardsByCategory</a></li><li><a href="global.html#getAllCategories">getAllCategories</a></li><li><a href="global.html#getAllPlayers">getAllPlayers</a></li><li><a href="global.html#getAnswerCardByCategory">getAnswerCardByCategory</a></li><li><a href="global.html#getCardById">getCardById</a></li><li><a href="global.html#getCategoryById">getCategoryById</a></li><li><a href="global.html#getPlayerByEmail">getPlayerByEmail</a></li><li><a href="global.html#getPlayerById">getPlayerById</a></li><li><a href="global.html#getQuestionAndAnswersCardsByCategory">getQuestionAndAnswersCardsByCategory</a></li><li><a href="global.html#getQuestionCardByCategory">getQuestionCardByCategory</a></li><li><a href="global.html#getRandomAnswerCardsByCategory">getRandomAnswerCardsByCategory</a></li><li><a href="global.html#getRandomQuestionCardByCategory">getRandomQuestionCardByCategory</a></li><li><a href="global.html#isAuthenticated">isAuthenticated</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#playerIdMiddleware">playerIdMiddleware</a></li><li><a href="global.html#register">register</a></li><li><a href="global.html#removeCard">removeCard</a></li><li><a href="global.html#removeCategory">removeCategory</a></li><li><a href="global.html#updateCardById">updateCardById</a></li><li><a href="global.html#updateCategory">updateCategory</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Mon Dec 09 2024 00:53:26 GMT+0100 (hora estándar de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

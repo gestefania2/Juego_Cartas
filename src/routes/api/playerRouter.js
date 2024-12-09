@@ -8,7 +8,7 @@ const router = Router();
 
 router.get("/card/list", [isAuthenticated, playerIdMiddleware], cardApiController.getAllCards)
 
-
+router.get("/category/list", [isAuthenticated, playerIdMiddleware], categoryApiController.getAllCategories)
 
 router.post ("/card/new",isAuthenticated,cardApiController.createCard);
 

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: controllers/player/playerApiController.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: controllers/player/playerApiController.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import playerController from "../player/playerController.js";
+
+/**
+ * Obtiene todos los jugadores de la base de datos y los devuelve en una respuesta JSON.
+ * 
+ * @param {Object} req - El objeto de solicitud.
+ * @param {Object} res - El objeto de respuesta que devuelve los jugadores en formato JSON.
+ * 
+ * @throws {Error} - Si ocurre un error al obtener los jugadores, se devuelve un error 500.
+ * 
+ * @returns {Promise&lt;Response>} - La respuesta a la petición, que contiene los jugadores en formato JSON.
+ */
+async function getAllPlayers(req, res) {
+    try{
+        const players = await playerController.getAllPlayers();
+        res.json(players);
+    } catch (error) {
+        console.error(error);
+        res.estatus(500).json({ error: 'Error al obtener los jugadores' });
+    }
+}
+
+
+/**
+ * Obtiene un jugador por su ID y lo devuelve en una respuesta JSON.
+ * 
+ * @param {Object} req - El objeto de solicitud que contiene el ID del jugador en los parámetros.
+ * @param {Object} res - El objeto de respuesta utilizado para enviar el jugador en formato JSON.
+ * 
+ * @throws {Error} - Si ocurre un error al obtener el jugador, se devuelve un error 500.
+ * @throws {Error} - Si el jugador no se encuentra, se devuelve un error 404.
+ * 
+ * @returns {Promise&lt;Response>} - La respuesta a la petición que contiene el jugador en formato JSON.
+ */
+async function getPlayerById(req, res) {
+    try {
+        const id = parseInt(req.params.id);
+        const player = await playerController.getPlayerById(id);
+        if (!user) {
+            return res.status(404).json({ error: 'Jugador no encontrado' });
+        }
+        res.json(player);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error al obtener el jugador' });
+    }
+}
+
+/**
+ * Obtiene un jugador por su correo electrónico y lo devuelve en una respuesta JSON.
+ * 
+ * @param {Object} req - El objeto de solicitud que contiene el email del jugador en el cuerpo.
+ * @param {Object} res - El objeto de respuesta utilizado para enviar el jugador en formato JSON.
+ * 
+ * @throws {Error} - Si el email no es proporcionado, devuelve un error 400.
+ * @throws {Error} - Si el jugador no se encuentra, devuelve un error 404.
+ * @throws {Error} - Si ocurre un error al obtener el jugador, devuelve un error 500.
+ * 
+ * @returns {Promise&lt;Response>} - La respuesta a la petición que contiene el jugador en formato JSON.
+ */
+async function getPlayerByEmail(req, res) 
+{
+    try {
+        const email = req.body.email;
+        
+        if (!email) {
+            return res.status(400).json({ error: 'El email es obligatorio' });
+        }
+
+        const player = await playerController.getPlayerByEmail(email);
+        
+        if (!player) {
+            return res.status(404).json({ error: 'Jugador no encontrado' });
+        }
+        res.json(player);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error al obtener el jugador' });
+    }
+} 
+
+export const functions = { 
+    getAllPlayers, 
+    getPlayerById,
+    getPlayerByEmail
+}
+
+export default functions;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#createCard">createCard</a></li><li><a href="global.html#createCategory">createCategory</a></li><li><a href="global.html#createPlayer">createPlayer</a></li><li><a href="global.html#getAllCards">getAllCards</a></li><li><a href="global.html#getAllCardsByCategory">getAllCardsByCategory</a></li><li><a href="global.html#getAllCategories">getAllCategories</a></li><li><a href="global.html#getAllPlayers">getAllPlayers</a></li><li><a href="global.html#getAnswerCardByCategory">getAnswerCardByCategory</a></li><li><a href="global.html#getCardById">getCardById</a></li><li><a href="global.html#getCategoryById">getCategoryById</a></li><li><a href="global.html#getPlayerByEmail">getPlayerByEmail</a></li><li><a href="global.html#getPlayerById">getPlayerById</a></li><li><a href="global.html#getQuestionAndAnswersCardsByCategory">getQuestionAndAnswersCardsByCategory</a></li><li><a href="global.html#getQuestionCardByCategory">getQuestionCardByCategory</a></li><li><a href="global.html#getRandomAnswerCardsByCategory">getRandomAnswerCardsByCategory</a></li><li><a href="global.html#getRandomQuestionCardByCategory">getRandomQuestionCardByCategory</a></li><li><a href="global.html#isAuthenticated">isAuthenticated</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#playerIdMiddleware">playerIdMiddleware</a></li><li><a href="global.html#register">register</a></li><li><a href="global.html#removeCard">removeCard</a></li><li><a href="global.html#removeCategory">removeCategory</a></li><li><a href="global.html#updateCardById">updateCardById</a></li><li><a href="global.html#updateCategory">updateCategory</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Mon Dec 09 2024 00:53:26 GMT+0100 (hora estándar de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
