@@ -36,7 +36,7 @@ async function getPlayerById(req, res) {
     try {
         const id = parseInt(req.params.id);
         const player = await playerController.getPlayerById(id);
-        if (!user) {
+        if (!player) {
             return res.status(404).json({ error: 'Jugador no encontrado' });
         }
         res.json(player);

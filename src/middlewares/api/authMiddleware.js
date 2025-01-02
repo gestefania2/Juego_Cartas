@@ -9,18 +9,23 @@ import jwt from "../../config/jwt.js";
  * @param {Object} res - El objeto de respuesta.
  * @param {Function} next - La función que se llamará si el token es válido.
  */
-async function isAuthenticated(req,res,next){
+async function isAuthenticated(req, res, next) {
   const authorization = req.headers.authorization;
-  if(!authorization){
-      return res.status(401).json({error:"jwt token needed"});
+  if (!authorization) {
+      return res.status(401).json({ error: "jwt token needed" });
   }
-  const token = authorization.replace("Bearer ","");
+  const token = authorization.replace("Bearer ", "");
   const verified = jwt.verify(token);
-  if(verified.error){
-      return res.status(401).json({error:"jwt token not correct"});
+  if (verified.error) {
+      return res.status(401).json({ error: "jwt token not correct" });
   }
+  
+  // Verificar si el usuario intenta acceder a sus propios datos
+  if (req.params.id && parseInt(req.params.id) !== verified.player_id) {
+      return res.status(403).json({ error: "No autorizado para acceder a estos datos" });
+  }
+  
   req.player_id = verified.player_id;
   next();
 }
-
 export default isAuthenticated;

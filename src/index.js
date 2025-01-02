@@ -1,13 +1,13 @@
 import express from 'express'; // framework para crear el servidor
 import dotenv from 'dotenv'; // cargar variables de entorno
 import router from './routes/api/router.js'; // importar rutas
-
+import cors from 'cors';
 
 
 dotenv.config();// cargar variables de entorno
 
 const app = express();// crear servidor 
-
+app.use(cors());
 
 
 app.use(express.static('public')); // configurar directorio de archivos estáticos

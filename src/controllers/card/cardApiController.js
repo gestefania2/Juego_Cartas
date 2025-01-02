@@ -23,6 +23,7 @@ async function getAllCards(req, res) {
 async function getCardById(req, res) {
     const id = parseInt(req.params.id);
     const card = await cardController.getCardById(id);
+    console.log("card", card);
     res.json(card);
 
 }
