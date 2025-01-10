@@ -1,5 +1,5 @@
 import cardController from "../../controllers/card/cardController.js";
-
+import categoryController from "../../controllers/category/categoryController.js";
 
 /**
  * Obtiene todas las cartas.
@@ -126,12 +126,40 @@ async function getQuestionAndAnswersCardsByCategory(req, res) {
  * @returns {Promise<Response>} - Una respuesta JSON que contiene la carta creada.
  */
 async function createCard(req, res) {
-    const { text, type, category_id } = req.body;
+    const { text, type, category_name } = req.body;
     const player_id = req.player_id;
-    const newCard = await cardController.createCard(text, type, category_id, player_id);
-    res.json({card:newCard});
-}
 
+    try {
+        // Obtener el último ID de categoría y crear uno nuevo
+        const lastCategory = await categoryController.getLastCategory();
+        const newCategoryId = (lastCategory ? lastCategory.category_id + 1 : 6);
+
+        // Crear la nueva categoría (usando tu estructura)
+        const category_description = "Nueva categoría"; // Puedes ajustar esto según necesites
+        const newCategory = await categoryController.createCategory(
+            category_name,
+            category_description,
+            newCategoryId,
+            player_id
+        );
+
+        // Crear la carta
+        const newCard = await cardController.createCard(
+            text,
+            type,
+            newCategoryId,
+            player_id
+        );
+
+        res.json({
+            card: newCard,
+            category: newCategory
+        });
+    } catch (error) {
+        console.error("Error:", error);
+        res.status(500).json({ error: "Error al crear la carta y categoría" });
+    }
+}
 /**
  * Actualiza una carta por su ID.
  * 

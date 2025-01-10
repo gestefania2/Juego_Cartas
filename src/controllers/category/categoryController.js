@@ -81,12 +81,19 @@ async function removeCategory(category_id) {
     return { message: 'Categoría eliminada correctamente' };
 }
 
+async function getLastCategory() {
+    return await categoryModel.findOne({
+        order: [['category_id', 'DESC']]
+    });
+}
+
 export const functions = {
     getAllCategories,
     getCategoryById,
     createCategory,
     updateCategory,
-    removeCategory
+    removeCategory,
+    getLastCategory
 }
 
 export default functions;
